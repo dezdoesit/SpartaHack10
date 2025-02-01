@@ -13,12 +13,14 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
+            Text("Welcome to your interview!")
+                .font(.extraLargeTitle)
+            
             Model3D(named: "Scene", bundle: realityKitContentBundle)
                 .padding(.bottom, 50)
 
-            Text("Hello, world!")
 
-            ToggleImmersiveSpaceButton()
+            PDFPickerView()
         }
         .padding()
     }

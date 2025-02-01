@@ -7,53 +7,114 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["GridMaterial", "Sphere"]
+    reorder nameChildren = ["GridMaterial", "Sphere", "HeadMovement", "Loop"]
     rel material:binding = None (
         bindMaterialAs = "weakerThanDescendants"
     )
 
-    def Sphere "Sphere" (
+    def "GridMaterial" (
         active = true
-        prepend apiSchemas = ["MaterialBindingAPI"]
+        references = @Materials/GridMaterial.usda@
     )
     {
-        rel material:binding = </Root/GridMaterial/GridMaterial> (
-            bindMaterialAs = "weakerThanDescendants"
-        )
-        double radius = 0.05
-        quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0, 0.0004)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "Businessman_Character_Ankit_Rigged" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 0.34906587, 0)
+        }
+        references = @Businessman_Character_Ankit_Rigged.usdz@
+    )
+    {
+        quatf xformOp:orient = (0.9848077, 0, 0.17364818, 0)
+        float3 xformOp:scale = (0.001, 0.001, 0.001)
+        float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-        def RealityKitComponent "Collider"
+        def RealityKitComponent "RCP_BehaviorsContainer"
         {
-            uint group = 1
-            uniform token info:id = "RealityKit.Collider"
-            uint mask = 4294967295
-            token type = "Default"
+            rel behaviors = </Root/Businessman_Character_Ankit_Rigged/OnAddedToScene>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
 
-            def RealityKitStruct "Shape"
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
             {
-                float3 extent = (0.2, 0.2, 0.2)
-                float radius = 0.05
-                token shapeType = "Sphere"
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
             }
         }
 
-        def RealityKitComponent "InputTarget"
+        def Preliminary_Behavior "OnAddedToScene"
         {
-            uniform token info:id = "RealityKit.InputTarget"
+            rel actions = </Root/Businessman_Character_Ankit_Rigged/OnAddedToScene/Action>
+            uniform bool exclusive
+            rel triggers = </Root/Businessman_Character_Ankit_Rigged/OnAddedToScene/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/Businessman_Character_Ankit_Rigged>
+                token info:id = "SceneTransition"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/Loop>
+                rel animationLibraryKeyOverrideKey = </Root/Businessman_Character_Ankit_Rigged/OnAddedToScene/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
         }
     }
 
-    def "GridMaterial" (
-        active = true
-        prepend references = @Materials/GridMaterial.usda@
+    def RealityKitTimeline "HeadMovement"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 8
+                uniform token info:id = "C547207E-5E00-45B9-8B6A-F37CBC0CC9B5"
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/Businessman_Character_Ankit_Rigged>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Loop" (
+        references = None
     )
     {
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 8
+                uniform token info:id = "38C12982-6E09-4AA0-A890-72E30AECE107"
+                double loopCount = 0
+                double startTime = 0
+                rel timeline = </Root/HeadMovement>
+            }
+        }
     }
 }
 
