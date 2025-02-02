@@ -17,41 +17,16 @@ import Foundation
 
 
 //setDate(current: date)
-class ResumeDataService{
-    
+class ResumeDataService {
     var URLString = "https://little-resonance-af2f.noshirt23penguin.workers.dev"
-
     
-    func fetchResponse(completion: @escaping(String) -> Void) {
-        guard let url = URL(string: URLString) else { return }
-
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            print("starting")
-            if let error = error {
-                print("Error: \(error)")
-                return
-            }
-
-            guard let data = data else {
-                print("No data received.")
-                return
-            }
-
-            do {
-                print("doing")
-                let response = try JSONDecoder().decode([Response].self, from: data)
-                let result = response[0].response
-                
-                completion(result)
-            } catch {
-                print("Error decoding data: \(error)")
-            }
-            
-            
-        }.resume()
+    func fetchResponse() async throws -> String {
+        guard let url = URL(string: URLString) else {
+            throw URLError(.badURL)
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let response = try JSONDecoder().decode([Response].self, from: data)
+        return response[0].response
     }
-    
-    
-    
-    
 }
