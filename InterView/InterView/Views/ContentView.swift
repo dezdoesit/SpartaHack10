@@ -42,6 +42,11 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 20) {
+            Button(action: {
+                print(resumeVM.questionsParse)
+            },label:{
+               Text("CLICK ME")
+            })
             if isUploading {
                 ProgressView("Uploading Resume...")
             }
