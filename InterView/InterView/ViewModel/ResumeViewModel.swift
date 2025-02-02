@@ -26,7 +26,7 @@ class ResumeViewModel: ObservableObject{
     private let service = ResumeDataService()
     
     init() {
-        fetchResponse()
+//        fetchResponse()
     }
     
     func fetchResponse() {
@@ -39,6 +39,9 @@ class ResumeViewModel: ObservableObject{
             }
         }
         
+    }
+    func uploadResume(myResume: String){
+        service.uploadResume(myResume: myResume)
     }
     
 }

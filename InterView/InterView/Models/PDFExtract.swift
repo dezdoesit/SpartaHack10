@@ -7,7 +7,7 @@
 
 import PDFKit
 
-func extractWordsFromPDF(fileURL: URL) -> [String]? {
+func extractWordsFromPDF(fileURL: URL) -> String? {
     // Create a PDFDocument from the file URL
     guard let pdfDocument = PDFDocument(url: fileURL) else {
         print("Could not load PDF document")
@@ -31,6 +31,6 @@ func extractWordsFromPDF(fileURL: URL) -> [String]? {
         }
     }
     
-    return words
+    return words.joined(separator: " ")
 }
 

@@ -11,12 +11,16 @@ import RealityKitContent
 
 struct ContentView: View {
     @ObservedObject var resumeVM = ResumeViewModel()
+    @State var myPDF: String
 
     var body: some View {
         VStack {
             
             Text(resumeVM.questions)
-            Button(action: {print("array: \(resumeVM.questionsParse)")}
+            Button(action: {
+                resumeVM.uploadResume(myResume: myPDF)
+            }
+                // print("array: \(resumeVM.questionsParse)")}
                    , label: {Text("Press ME")})
 //            Text("Welcome to your interview!")
 //                .font(.extraLargeTitle)
@@ -25,8 +29,8 @@ struct ContentView: View {
 //                .padding(.bottom, 50)
 //
 //
-//            PDFPickerView()
-            FreeFormDrawingView()
+            PDFPickerView(myPDFWords: $myPDF)
+            //FreeFormDrawingView()
         }
         .padding()
 //        .onAppear(){
@@ -36,6 +40,6 @@ struct ContentView: View {
 }
 
 #Preview(windowStyle: .automatic) {
-    ContentView()
+    ContentView(myPDF: "test")
         .environment(AppModel())
 }

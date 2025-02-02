@@ -11,9 +11,11 @@ import UniformTypeIdentifiers
 struct PDFPickerView: View {
     @State private var showingDocumentPicker = false
     @State private var selectedPDF: URL?
-    @State private var myPDFWords: [String] = []
+    @Binding var myPDFWords: String
+
     
     var body: some View {
+
         VStack {
             Button("Select PDF") {
                 showingDocumentPicker = true
