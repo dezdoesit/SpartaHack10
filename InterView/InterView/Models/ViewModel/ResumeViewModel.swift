@@ -37,18 +37,18 @@ class ResumeViewModel: ObservableObject {
     }
     private let service = ResumeDataService()
     
-    func uploadResume(_ pdfText: String) async throws {
-        uploadStatus = .uploading
-        do {
-            try await service.uploadResume(pdfText)
-            uploadStatus = .success
-            // After successful upload, fetch new questions
-             fetchResponse()
-        } catch {
-            uploadStatus = .error(error)
-            throw error
-        }
-    }
+//    func uploadResume(_ pdfText: String) async throws {
+//        uploadStatus = .uploading
+//        do {
+//            try await service.uploadResume(pdfText)
+//            uploadStatus = .success
+//            // After successful upload, fetch new questions
+//             fetchResponse()
+//        } catch {
+//            uploadStatus = .error(error)
+//            throw error
+//        }
+//    }
     
     func fetchResponse() {
         service.fetchProcessedQuestions(){ result in
