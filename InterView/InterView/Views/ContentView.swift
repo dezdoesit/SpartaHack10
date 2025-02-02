@@ -10,9 +10,14 @@ import RealityKit
 import RealityKitContent
 
 struct ContentView: View {
+    @ObservedObject var resumeVM = ResumeViewModel()
 
     var body: some View {
         VStack {
+            
+            Text(resumeVM.questions)
+            Button(action: {print(resumeVM.questions)}
+                   , label: {Text("Press ME")})
 //            Text("Welcome to your interview!")
 //                .font(.extraLargeTitle)
 //            
@@ -24,9 +29,9 @@ struct ContentView: View {
             FreeFormDrawingView()
         }
         .padding()
-        .onAppear(){
-            print(extractWordsFromPDF(fileURL: Bundle.main.url(forResource: "sample", withExtension: "pdf")!)!.joined(separator: " "))
-        }
+//        .onAppear(){
+//            print(extractWordsFromPDF(fileURL: Bundle.main.url(forResource: "sample", withExtension: "pdf")!)!.joined(separator: " "))
+//        }
     }
 }
 

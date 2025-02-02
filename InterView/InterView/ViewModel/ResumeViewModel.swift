@@ -16,30 +16,27 @@
 import Foundation
 
 
-class NasaViewModel: ObservableObject{
-    @Published var picture = ""
-    @Published var date = ""
+class ResumeViewModel: ObservableObject{
+    
+    @Published var questions = ""
+
     
     
-    private let service = NasaDataService()
+    private let service = ResumeDataService()
     
     init() {
-        fetchPicture()
-        
-        
+        fetchResponse()
     }
     
-    func fetchPicture() {
-        service.fetchPicture() { image in
+    func fetchResponse() {
+        print("starting fetch")
+        service.fetchResponse() { result in
             DispatchQueue.main.async{
-                self.picture = image
+                self.questions = result
+                
             }
         }
         
     }
     
-    func setCurrent(current: String){
-        service.setDate(current: current)
-        fetchPicture()
-    }
 }

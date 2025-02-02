@@ -19,13 +19,14 @@ import Foundation
 //setDate(current: date)
 class ResumeDataService{
     
-    var URLString = ""
+    var URLString = "https://little-resonance-af2f.noshirt23penguin.workers.dev"
 
     
     func fetchResponse(completion: @escaping(String) -> Void) {
         guard let url = URL(string: URLString) else { return }
 
         URLSession.shared.dataTask(with: url) { data, response, error in
+            print("starting")
             if let error = error {
                 print("Error: \(error)")
                 return
@@ -37,10 +38,11 @@ class ResumeDataService{
             }
 
             do {
-                let response = try JSONDecoder().decode(ResumeResponse.self, from: data)
-                let result = response.
+                print("doing")
+                let response = try JSONDecoder().decode([Response].self, from: data)
+                let result = response[0].response
                 
-                completion(picture)
+                completion(result)
             } catch {
                 print("Error decoding data: \(error)")
             }
