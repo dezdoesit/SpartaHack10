@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 struct PDFPickerView: View {
     @State private var showingDocumentPicker = false
     @State private var selectedPDF: URL?
+    @State private var myPDFWords: [String] = []
     
     var body: some View {
         VStack {
@@ -31,6 +32,7 @@ struct PDFPickerView: View {
             case .success(let urls):
                 if let url = urls.first {
                     selectedPDF = url
+                    myPDFWords = extractWordsFromPDF(fileURL: selectedPDF!)!
                     // Here you can handle the PDF file
                 }
             case .failure(let error):

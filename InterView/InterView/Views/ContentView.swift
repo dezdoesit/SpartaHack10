@@ -23,6 +23,9 @@ struct ContentView: View {
             PDFPickerView()
         }
         .padding()
+        .onAppear(){
+            print(extractWordsFromPDF(fileURL: Bundle.main.url(forResource: "sample", withExtension: "pdf")!)!.joined(separator: " "))
+        }
     }
 }
 
