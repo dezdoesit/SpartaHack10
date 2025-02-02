@@ -2,7 +2,7 @@ import Foundation
 
 
 
-func cleanQuestionText(_ text: String) -> String {
+func cleanQuestionText(_ text: String) -> String? {
     var cleanedText = text
         .replacingOccurrences(of: "\\n", with: "\n")
         .replacingOccurrences(of: "\\\"", with: "\"")
@@ -11,7 +11,7 @@ func cleanQuestionText(_ text: String) -> String {
     let unwantedPrefixes = ["Info", "Debug", "Error", "Successfully", "Starting agent"]
     for prefix in unwantedPrefixes {
         if cleanedText.starts(with: prefix) {
-            return ""
+            return nil // Return nil instead of an empty string
         }
     }
 
@@ -19,8 +19,9 @@ func cleanQuestionText(_ text: String) -> String {
         cleanedText = String(cleanedText.dropFirst().dropLast())
     }
 
-    return cleanedText
+    return cleanedText.isEmpty ? nil : cleanedText // Return nil for empty text
 }
+
 
 struct LogEntry: Codable {
     let log_entry: String

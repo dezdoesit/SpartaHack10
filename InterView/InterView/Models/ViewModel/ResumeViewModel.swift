@@ -19,7 +19,8 @@ import Foundation
 @MainActor
 class ResumeViewModel: ObservableObject {
     @Published var currentQuestion: Question?
-    @Published var questionsParse: [String] = []
+    @Published var questionsParse: String = ""
+    @Published var questions: [Question] = []
     @Published var currentIndex = 0
     @Published var uploadStatus: UploadStatus = .idle
     
@@ -53,6 +54,10 @@ class ResumeViewModel: ObservableObject {
             Task{
                 do{
                     self.questionsParse = result
+                    for (i, x) in self.questionsParse.split(separator: "\n").enumerated() {
+                        self.questions.append(Question(text: String(x), index: i))
+                    }
+                    print(self.questions)
                 }
             }
         }
@@ -68,24 +73,24 @@ class ResumeViewModel: ObservableObject {
         //    }
     }
     
-    private func updateCurrentQuestion() {
-        currentQuestion = Question(
-            text: questionsParse[currentIndex],
-            index: currentIndex + 1
-        )
-    }
-    
-    func nextQuestion() {
-        if currentIndex < questionsParse.count - 1 {
-            currentIndex += 1
-            updateCurrentQuestion()
-        }
-    }
-    
-    func previousQuestion() {
-        if currentIndex > 0 {
-            currentIndex -= 1
-            updateCurrentQuestion()
-        }
-    }
+//    private func updateCurrentQuestion() {
+//        currentQuestion = Question(
+//            text: questions[currentIndex],
+//            index: currentIndex + 1
+//        )
+//    }
+//    
+//    func nextQuestion() {
+//        if currentIndex < questionsParse.count - 1 {
+//            currentIndex += 1
+//            updateCurrentQuestion()
+//        }
+//    }
+//    
+//    func previousQuestion() {
+//        if currentIndex > 0 {
+//            currentIndex -= 1
+//            updateCurrentQuestion()
+//        }
+//    }
 }

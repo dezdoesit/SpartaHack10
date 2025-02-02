@@ -42,21 +42,20 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Button(action: {
-                print(resumeVM.questionsParse)
-            },label:{
-               Text("CLICK ME")
-            })
             if isUploading {
                 ProgressView("Uploading Resume...")
             }
-            
             
             PDFPickerView(resumeVM: resumeVM)
             
             if let error = uploadError {
                 Text("Upload Error: \(error.localizedDescription)")
                     .foregroundColor(.red)
+            }
+            
+            // Add both SpeechView and SpeechToTextTestView after successful PDF upload
+            if case .success = resumeVM.uploadStatus {
+                InterviewSessionView(questions: resumeVM.questions)
             }
         }
         .padding()

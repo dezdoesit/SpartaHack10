@@ -20,13 +20,13 @@ import Foundation
 class ResumeDataService {
     private let baseURLString = "https://little-resonance-af2f.noshirt23penguin.workers.dev"
   
-    func fetchProcessedQuestions(completion: @escaping ([String]) -> Void) {
+    func fetchProcessedQuestions(completion: @escaping (String) -> Void) {
         let agentAddress = "agent1qwqpl4m8kzc7mskuax8xstwcw9xdskxgpd5fzhw67zcxefdhax5kvycjnz8"
         let urlString = "https://agentverse.ai/v1/hosting/agents/\(agentAddress)/logs/latest"
         
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
-            completion([])
+            completion("")
             return
         }
         
@@ -37,7 +37,7 @@ class ResumeDataService {
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching logs:", error?.localizedDescription ?? "Unknown error")
-                completion([])
+                completion("")
                 return
             }
             
@@ -45,11 +45,12 @@ class ResumeDataService {
                 let decodedResponse = try JSONDecoder().decode([LogEntry].self, from: data)
                 
                 let questions = decodedResponse.compactMap { log in
+                    
                     log.log_entry.contains("?") || log.log_entry.contains("interview questions:") ? cleanQuestionText(log.log_entry) : nil
                 }
 
                 DispatchQueue.main.async {
-                    completion(questions)
+                    completion(questions[0])
                 }
             } catch {
                 print("Error decoding response:", error.localizedDescription)
@@ -58,7 +59,7 @@ class ResumeDataService {
                     print("Raw JSON Response:\n\(jsonString)")
                 }
 
-                completion([])
+                completion("")
             }
         }.resume()
     }
