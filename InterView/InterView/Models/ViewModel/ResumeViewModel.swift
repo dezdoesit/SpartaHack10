@@ -30,6 +30,9 @@ class ResumeViewModel: ObservableObject {
         case error(Error)
     }
     
+    init(){
+        self.fetchResponse()
+    }
     private let service = ResumeDataService()
     
     func uploadResume(_ pdfText: String) async throws {
@@ -45,16 +48,24 @@ class ResumeViewModel: ObservableObject {
         }
     }
     
-    func fetchResponse() async {
-        do {
-            let result = try await service.fetchResponse()
-            self.questionsParse = result.components(separatedBy: "\n\n")
-            if !self.questionsParse.isEmpty {
-                updateCurrentQuestion()
+    func fetchResponse() {
+        service.fetchProcessedQuestions(){ result in
+            Task{
+                do{
+                    self.questionsParse = result
+                }
             }
-        } catch {
-            print("Error fetching response: \(error)")
         }
+        //        do {
+        //            let result = try await service.fetchResponse()
+        //            self.questionsParse = result.components(separatedBy: "\n\n")
+        //            if !self.questionsParse.isEmpty {
+        //                updateCurrentQuestion()
+        //            }
+        //        } catch {
+        //            print("Error fetching response: \(error)")
+        //        }
+        //    }
     }
     
     private func updateCurrentQuestion() {
