@@ -18,7 +18,7 @@ import Foundation
 
 //setDate(current: date)
 class ResumeDataService {
-    private let baseURLString = "https://little-resonance-af2f.noshirt23penguin.workers.dev"
+    private let baseURLString = "https://hire.joshmillski123.workers.dev/"
     
     func fetchProcessedQuestions(completion: @escaping (String) -> Void) {
         let agentAddress = "agent1qwqpl4m8kzc7mskuax8xstwcw9xdskxgpd5fzhw67zcxefdhax5kvycjnz8"
