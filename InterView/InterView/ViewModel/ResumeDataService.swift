@@ -18,10 +18,10 @@ import Foundation
 
 //setDate(current: date)
 class ResumeDataService {
-    var URLString = "https://little-resonance-af2f.noshirt23penguin.workers.dev"
+    private let baseURLString = "https://little-resonance-af2f.noshirt23penguin.workers.dev"
     
     func fetchResponse() async throws -> String {
-        guard let url = URL(string: URLString) else {
+        guard let url = URL(string: baseURLString) else {
             throw URLError(.badURL)
         }
         
@@ -29,40 +29,36 @@ class ResumeDataService {
         let response = try JSONDecoder().decode([Response].self, from: data)
         return response[0].response
     }
-    func uploadResume(myResume: String){
-        guard let url = URL(string: "https://little-resonance-af2f.noshirt23penguin.workers.dev/resume") else { print("Invalid URL")
-            return
+    
+    func uploadResume(_ pdfText: String) async throws {
+        guard let url = URL(string: "\(baseURLString)/resume") else {
+            throw URLError(.badURL)
         }
-
-        guard let httpBody = myResume.data(using: .utf8) else {
-            print("Error encoding string")
-            return
+        
+        guard let httpBody = pdfText.data(using: .utf8) else {
+            throw NSError(domain: "ResumeUpload", code: -1,
+                         userInfo: [NSLocalizedDescriptionKey: "Failed to encode PDF text"])
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
         request.httpBody = httpBody
-
-        // Step 5: Perform the request using URLSession
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Request failed with error: \(error)")
-                return
-            }
-            
-            // Step 6: Handle the response
-            if let data = data {
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("Response: \(responseString)")
-                } else {
-                    print("Invalid response data")
-                }
-            }
-        }.resume()
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        // Optional: Parse response if needed
+        if let responseString = String(data: data, encoding: .utf8) {
+            print("Upload Response: \(responseString)")
+        }
     }
-    
-    
-    
-    
 }
+    
+    
+    
+

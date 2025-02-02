@@ -36,31 +36,29 @@ import RealityKitContent
 //}
 
 struct ContentView: View {
-    @ObservedObject var resumeVM = ResumeViewModel()
-    @State var myPDF: String = ""
-
+    @StateObject var resumeVM = ResumeViewModel()
+    @State private var isUploading = false
+    @State private var uploadError: Error?
+    
     var body: some View {
-        VStack {
-            
-            Button(action: {
-                resumeVM.uploadResume(myResume: myPDF)
+        VStack(spacing: 20) {
+            if isUploading {
+                ProgressView("Uploading Resume...")
             }
-                // print("array: \(resumeVM.questionsParse)")}
-                   , label: {Text("Press ME")})
-//            Text("Welcome to your interview!")
-//                .font(.extraLargeTitle)
-//            
-//            Model3D(named: "Scene", bundle: realityKitContentBundle)
-//                .padding(.bottom, 50)
-//
-//
-            PDFPickerView(myPDFWords: $myPDF)
-            //FreeFormDrawingView()
+            
+            
+            PDFPickerView(resumeVM: resumeVM)
+            
+            if let error = uploadError {
+                Text("Upload Error: \(error.localizedDescription)")
+                    .foregroundColor(.red)
+            }
         }
         .padding()
     }
 }
+
 #Preview(windowStyle: .automatic) {
-    ContentView(myPDF: "test")
+    ContentView()
         .environment(AppModel())
 }

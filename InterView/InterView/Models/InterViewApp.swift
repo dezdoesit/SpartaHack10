@@ -14,7 +14,7 @@ struct InterViewApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(myPDF: "")
+            ContentView()
                 .environment(appModel)
         }
 
