@@ -16,12 +16,11 @@
 import Foundation
 
 
-class ResumeViewModel: ObservableObject{
-    
-    @Published var questions = ""
+@MainActor
+class ResumeViewModel: ObservableObject {
+    @Published var currentQuestion: Question?
     @Published var questionsParse: [String] = []
-
-    
+    @Published var currentIndex = 0
     
     private let service = ResumeDataService()
     
@@ -29,14 +28,31 @@ class ResumeViewModel: ObservableObject{
 //        fetchResponse()
     }
     
-    func fetchResponse() {
-        print("starting fetch")
-        service.fetchResponse() { result in
-            DispatchQueue.main.async{
-                self.questions = result
-                self.questionsParse = self.questions.components(separatedBy: "\n\n")
-                
+    func fetchResponse() async {
+        do {
+            let result = try await service.fetchResponse()
+            self.questionsParse = result.components(separatedBy: "\n\n")
+            self.questionsParse.removeFirst()
+            
+            if !questionsParse.isEmpty {
+                updateCurrentQuestion()
             }
+        } catch {
+            print("Error fetching response: \(error)")
+        }
+    }
+    
+    func nextQuestion() {
+        if currentIndex < questionsParse.count - 1 {
+            currentIndex += 1
+            updateCurrentQuestion()
+        }
+    }
+    
+    func previousQuestion() {
+        if currentIndex > 0 {
+            currentIndex -= 1
+            updateCurrentQuestion()
         }
         
     }
@@ -44,4 +60,10 @@ class ResumeViewModel: ObservableObject{
         service.uploadResume(myResume: myResume)
     }
     
+    private func updateCurrentQuestion() {
+        currentQuestion = Question(
+            text: questionsParse[currentIndex],
+            index: currentIndex + 1
+        )
+    }
 }
