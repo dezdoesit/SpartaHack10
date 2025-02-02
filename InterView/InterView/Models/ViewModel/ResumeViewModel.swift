@@ -41,7 +41,7 @@ class ResumeViewModel: ObservableObject {
             try await service.uploadResume(pdfText)
             uploadStatus = .success
             // After successful upload, fetch new questions
-            await fetchResponse()
+             fetchResponse()
         } catch {
             uploadStatus = .error(error)
             throw error
