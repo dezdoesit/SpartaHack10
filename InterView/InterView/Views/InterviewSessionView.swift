@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct InterviewSessionView: View {
+    @ObservedObject var resumeVM: ResumeViewModel
     let questions: [Question]
     
     var body: some View {
@@ -19,7 +20,7 @@ struct InterviewSessionView: View {
                 .padding(.vertical)
             
             // Speech-to-text recognition
-            SpeechToTextTestView()
+            SpeechToTextTestView(resumeVM: resumeVM)
         }
     }
 }

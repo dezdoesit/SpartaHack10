@@ -45,7 +45,14 @@ struct ContentView: View {
             if isUploading {
                 ProgressView("Uploading Resume...")
             }
-            
+            Button("GET GRADE"){
+                Task{
+                    do{
+                        try await resumeVM.getGrade()
+                    }
+                }
+                print(resumeVM.grade)
+            }
             PDFPickerView(resumeVM: resumeVM)
             
             if let error = uploadError {
@@ -55,7 +62,7 @@ struct ContentView: View {
             
             // Add both SpeechView and SpeechToTextTestView after successful PDF upload
             if case .success = resumeVM.uploadStatus {
-                InterviewSessionView(questions: resumeVM.questions)
+                InterviewSessionView(resumeVM: resumeVM, questions: resumeVM.questions)
             }
         }
         .padding()

@@ -23,6 +23,7 @@ class ResumeViewModel: ObservableObject {
     @Published var questions: [Question] = []
     @Published var currentIndex = 0
     @Published var uploadStatus: UploadStatus = .idle
+    @Published var grade = ""
     
     enum UploadStatus {
         case idle
@@ -60,6 +61,44 @@ class ResumeViewModel: ObservableObject {
                     print(self.questions)
                 }
             }
+            Task{
+                do{
+                    try await self.uploadQ()
+                }
+            }
+        }
+    }
+    func getGrade() async throws{
+            Task{
+                do{
+                    self.grade = try await service.fetchResponse()
+                }
+            }
+        }
+    
+        
+        func uploadQ() async throws{
+                uploadStatus = .uploading
+                do {
+                    try await service.uploadQuestions(questions: self.questionsParse)
+                    uploadStatus = .success
+                } catch {
+                    uploadStatus = .error(error)
+                    throw error
+                }
+                
+        }
+        func uploadA(answers: String) async throws{
+            
+                uploadStatus = .uploading
+                do {
+                    try await service.uploadAnswers(answers: answers)
+                    uploadStatus = .success
+                } catch {
+                    uploadStatus = .error(error)
+                    throw error
+                }
+                
         }
         //        do {
         //            let result = try await service.fetchResponse()
@@ -71,7 +110,7 @@ class ResumeViewModel: ObservableObject {
         //            print("Error fetching response: \(error)")
         //        }
         //    }
-    }
+    
     
 //    private func updateCurrentQuestion() {
 //        currentQuestion = Question(

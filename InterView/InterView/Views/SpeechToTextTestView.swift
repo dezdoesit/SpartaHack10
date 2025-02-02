@@ -7,6 +7,7 @@ struct SpeechToTextTestView: View {
     @StateObject var speechRecognizer = SpeechRecognizer()
     @State private var isRecording = false
     @State private var fullTranscript: String = ""
+    @ObservedObject var resumeVM: ResumeViewModel
     
     var body: some View {
         VStack {
@@ -28,9 +29,18 @@ struct SpeechToTextTestView: View {
             
             Button("Show Full Transcript") {
                 fullTranscript = speechRecognizer.getFullTranscript()
+               
+               
             }
             .padding()
-            
+            Button("Grade Answers"){
+                Task{
+                    do{
+                        try await resumeVM.uploadA(answers: fullTranscript)
+                    }
+                }
+            }
+           
             ScrollView {
                 Text(fullTranscript)
                     .padding()
@@ -54,5 +64,5 @@ struct SpeechToTextTestView: View {
 
 
 #Preview {
-    SpeechToTextTestView()
+    SpeechToTextTestView(resumeVM: ContentView().resumeVM)
 }
