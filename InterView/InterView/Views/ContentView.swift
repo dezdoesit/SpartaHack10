@@ -16,7 +16,7 @@ struct ContentView: View {
         VStack {
             
             Text(resumeVM.questions)
-            Button(action: {print(resumeVM.questions)}
+            Button(action: {print("array: \(resumeVM.questionsParse)")}
                    , label: {Text("Press ME")})
 //            Text("Welcome to your interview!")
 //                .font(.extraLargeTitle)

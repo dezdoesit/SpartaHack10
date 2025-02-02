@@ -19,6 +19,7 @@ import Foundation
 class ResumeViewModel: ObservableObject{
     
     @Published var questions = ""
+    @Published var questionsParse: [String] = []
 
     
     
@@ -33,6 +34,7 @@ class ResumeViewModel: ObservableObject{
         service.fetchResponse() { result in
             DispatchQueue.main.async{
                 self.questions = result
+                self.questionsParse = self.questions.components(separatedBy: "\n\n")
                 
             }
         }
