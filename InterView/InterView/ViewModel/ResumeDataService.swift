@@ -30,7 +30,7 @@ class ResumeDataService {
         return response[0].response
     }
     func uploadResume(myResume: String){
-        guard let url = URL(string: "https://dash.cloudflare.com/320fc87f048be5f63121e9f44adf2e84/workers/services/edit/little-resonance-af2f/production/resume") else { print("Invalid URL")
+        guard let url = URL(string: "https://little-resonance-af2f.noshirt23penguin.workers.dev/resume") else { print("Invalid URL")
             return
         }
 

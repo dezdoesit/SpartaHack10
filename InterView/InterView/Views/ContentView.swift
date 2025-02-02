@@ -37,7 +37,7 @@ import RealityKitContent
 
 struct ContentView: View {
     @ObservedObject var resumeVM = ResumeViewModel()
-    @State var myPDF: String
+    @State var myPDF: String = ""
 
     var body: some View {
         VStack {
