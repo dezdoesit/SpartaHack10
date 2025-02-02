@@ -53,9 +53,9 @@ struct ContentView: View {
                     .foregroundColor(.red)
             }
             
-            // Add SpeechView after successful PDF upload
+            // Add both SpeechView and SpeechToTextTestView after successful PDF upload
             if case .success = resumeVM.uploadStatus {
-                SpeechView(myArray: resumeVM.questions)
+                InterviewSessionView(questions: resumeVM.questions)
             }
         }
         .padding()
