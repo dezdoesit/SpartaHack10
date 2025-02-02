@@ -166,6 +166,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We are going to use your microphone to transcribe your interview practice";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We are going to use the captions of your interview so we can better optimize your interview practice";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -192,6 +194,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We are going to use your microphone to transcribe your interview practice";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We are going to use the captions of your interview so we can better optimize your interview practice";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
