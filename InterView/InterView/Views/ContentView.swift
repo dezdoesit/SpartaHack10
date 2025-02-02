@@ -42,7 +42,6 @@ struct ContentView: View {
     var body: some View {
         VStack {
             
-            Text(resumeVM.questions)
             Button(action: {
                 resumeVM.uploadResume(myResume: myPDF)
             }
