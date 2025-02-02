@@ -1,3 +1,11 @@
+//
+//  LogEntry.swift
+//  InterView
+//
+//  Created by Hassan Alkhafaji on 2/2/25.
+//
+
+
 import Foundation
 
 func fetchProcessedQuestions(completion: @escaping ([String]) -> Void) {
